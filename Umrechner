@@ -1,0 +1,603 @@
+package java2enterprise;
+
+import java.awt.EventQueue;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import java.awt.Choice;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
+public class Umrechner extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private JTextField tfEingabe;
+	private JTextField tfAusgabe;
+
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Umrechner frame = new Umrechner();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	public Umrechner() {
+		setBackground(Color.RED);
+		setTitle("EinheitenUmrechner 1.0.0 Alpha");
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(500, 250, 450, 255);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.LIGHT_GRAY);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		Choice choice = new Choice();
+		choice.setBackground(Color.WHITE);
+		choice.setBounds(135, 10, 300, 20);
+		choice.add("Energie");
+		choice.add("Flaeche");
+		choice.add("Geschwindigkeit");
+		choice.add("Leistung");
+		
+		contentPane.add(choice);
+		
+		JLabel lblAntwort = new JLabel("");
+		lblAntwort.setForeground(new Color(0, 255, 0));
+		lblAntwort.setBackground(Color.WHITE);
+		lblAntwort.setBounds(10, 185, 424, 30);
+		contentPane.add(lblAntwort);
+		
+		JLabel lblNewLabel = new JLabel("Umrechnen");
+		lblNewLabel.setBounds(10, 10, 130, 20);
+		contentPane.add(lblNewLabel);
+		
+		Choice c_Eingabe = new Choice();
+		c_Eingabe.setBackground(Color.WHITE);
+		c_Eingabe.setBounds(10, 51, 180, 20);
+		contentPane.add(c_Eingabe);
+		
+		Choice c_Ausgabe = new Choice();
+		c_Ausgabe.setBackground(Color.WHITE);
+		c_Ausgabe.setBounds(255, 51, 180, 20);
+		contentPane.add(c_Ausgabe);
+		
+		tfEingabe = new JTextField();
+		tfEingabe.setBackground(Color.WHITE);
+		tfEingabe.setBounds(10, 82, 180, 20);
+		contentPane.add(tfEingabe);
+		tfEingabe.setColumns(10);
+		
+		tfAusgabe = new JTextField();
+		tfAusgabe.setBackground(Color.WHITE);
+		tfAusgabe.setEditable(false);
+		tfAusgabe.setColumns(10);
+		tfAusgabe.setBounds(255, 82, 180, 20);
+		contentPane.add(tfAusgabe);
+		
+		JLabel lblNewLabel_1 = new JLabel("=");
+		lblNewLabel_1.setBounds(217, 85, 14, 14);
+		contentPane.add(lblNewLabel_1);
+		
+		JButton btnEnde = new JButton("Ende");
+		btnEnde.setBackground(Color.WHITE);
+		btnEnde.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		btnEnde.setBounds(255, 149, 180, 25);
+		contentPane.add(btnEnde);
+		
+		JButton btnEingabe = new JButton("Eingabe");
+		btnEingabe.setBackground(Color.WHITE);
+		btnEingabe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String data = "Selected: "+ choice.getItem(choice.getSelectedIndex());
+				lblAntwort.setText(data);
+				String wert = choice.getItem(choice.getSelectedIndex());
+				
+				c_Eingabe.removeAll();
+				c_Ausgabe.removeAll();
+				
+				if(wert.equals("Energie")) {
+					c_Eingabe.add("Joule");
+					c_Eingabe.add("kWh");
+					c_Eingabe.add("Nm");
+					c_Eingabe.add("Wh");
+					
+					c_Ausgabe.add("Joule");
+					c_Ausgabe.add("kWh");
+					c_Ausgabe.add("Nm");
+					c_Ausgabe.add("Wh");
+				}
+				else if(wert.equals("Flaeche")) {
+					c_Eingabe.add("Hektar");
+					c_Eingabe.add("Quadratkilometer");
+					c_Eingabe.add("Quadratmeter");
+					c_Eingabe.add("Quadratzentimeter");
+					
+					c_Ausgabe.add("Hektar");
+					c_Ausgabe.add("Quadratkilometer");
+					c_Ausgabe.add("Quadratmeter");
+					c_Ausgabe.add("Quadratzentimeter");
+				}
+				else if(wert.equals("Geschwindigkeit")) {
+					c_Eingabe.add("mph");
+					c_Eingabe.add("kmh");
+					c_Eingabe.add("Knoten");
+					c_Eingabe.add("mps");
+					
+					c_Ausgabe.add("mph");
+					c_Ausgabe.add("kmh");
+					c_Ausgabe.add("Knoten");
+					c_Ausgabe.add("mps");
+				}
+				else if(wert.equals("Leistung")) {
+					c_Eingabe.add("Kilowatt");
+					c_Eingabe.add("Watt");
+					c_Eingabe.add("PS");
+					
+					c_Ausgabe.add("Kilowatt");
+					c_Ausgabe.add("Watt");
+					c_Ausgabe.add("PS");
+				}
+			}
+		});
+		btnEingabe.setBounds(11, 149, 180, 25);
+		contentPane.add(btnEingabe);
+		
+		JButton btnBerechnen = new JButton("Berechnen");
+		btnBerechnen.setBackground(Color.WHITE);
+		btnBerechnen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String eingabe = c_Eingabe.getItem(c_Eingabe.getSelectedIndex());
+				String ausgabe = c_Ausgabe.getItem(c_Ausgabe.getSelectedIndex());
+				if(eingabe.equals("Joule") && ausgabe.equals("kWh")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = (2.7778) * (Math.pow(10, -7) * textFeldEingabe);
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception gtgs) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Joule") && ausgabe.equals("Nm")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception ehsd) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Joule") && ausgabe.equals("Wh")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = (2.7778) * (Math.pow(10, -4) * textFeldEingabe);
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception gfhd) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("kWh") && ausgabe.equals("Joule")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = (3599971.2 * textFeldEingabe);
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception trgf) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("kWh") && ausgabe.equals("Nm") ) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 3600000 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception poih) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("kWh") && ausgabe.equals("Wh")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 1000 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception lkhj) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Nm") && ausgabe.equals("kWh")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = (2.7778) * (Math.pow(10, -7) * textFeldEingabe);
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception desd) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Nm") && ausgabe.equals("Joule")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception frgs) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Nm") && ausgabe.equals("Wh")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = (2.7778) * (Math.pow(10, -4) * textFeldEingabe);
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception freds) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Wh") && ausgabe.equals("Joule")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 3600 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception frse) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Wh") && ausgabe.equals("kWh")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 0.001 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception dest) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Wh") && ausgabe.equals("Nm")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 3600 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception desr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Hektar") && ausgabe.equals("Quadratkilometer")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 0.01 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception des) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Hektar") && ausgabe.equals("Quadratmeter")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 10000 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception nef) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Hektar") && ausgabe.equals("Quadratzentimeter")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 100000000 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception nef) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Quadratkilometer") && ausgabe.equals("Hektar")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 100 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Quadratkilometer") && ausgabe.equals("Quadratmeter")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 1000000 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Quadratkilometer") && ausgabe.equals("Quadratzentimeter")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = (Math.pow(10, 10)) * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Quadratmeter") && ausgabe.equals("Hektar")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 0.0001 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Quadratmeter") && ausgabe.equals("Quadratkilometer")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 0.000001 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Quadratmeter") && ausgabe.equals("Quadratzentimeter")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 10000 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Quadratzentimeter") && ausgabe.equals("Hektar")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = (Math.pow(10, -8)) * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Quadratzentimeter") && ausgabe.equals("Quadratkilometer")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = (Math.pow(10, -10)) * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Quadratzentimeter") && ausgabe.equals("Quadratmeter")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = (Math.pow(10, -4)) * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("mph") && ausgabe.equals("kmh")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 1.60934 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("mph") && ausgabe.equals("mps")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 0.44704 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("mph") && ausgabe.equals("Knoten")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 0.868976 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("kmh") && ausgabe.equals("mph")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 0.621371 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("kmh") && ausgabe.equals("Knoten")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 0.539957 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("kmh") && ausgabe.equals("mps")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 0.2777778 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Knoten") && ausgabe.equals("mph")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 1.15078 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Knoten") && ausgabe.equals("kmh")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 1.852 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Knoten") && ausgabe.equals("mps")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 0.5144 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("mps") && ausgabe.equals("kmh")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 3.6 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("mps") && ausgabe.equals("Knoten")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 1.9438 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("mps") && ausgabe.equals("mph")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 2.2369 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Kilowatt") && ausgabe.equals("Watt")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 1000 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Kilowatt") && ausgabe.equals("PS")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 1.359621 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("PS") && ausgabe.equals("Kilowatt")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 0.735498 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("PS") && ausgabe.equals("Watt")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 735.4987 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Watt") && ausgabe.equals("Kilowatt")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 0.001 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe.equals("Watt") && ausgabe.equals("PS")) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						double ergebnis1 = 0.001359 * textFeldEingabe;
+						tfAusgabe.setText(String.valueOf(ergebnis1));
+					}
+					catch(Exception hzfr) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+				else if(eingabe == ausgabe) {
+					try {
+						double textFeldEingabe = Double.parseDouble(tfEingabe.getText());
+						tfAusgabe.setText(String.valueOf(textFeldEingabe));
+					}
+					catch(Exception esaf) {
+						JOptionPane.showMessageDialog(null, "Sie haben keine Gültige Nummer eingegeben!!!");
+					}
+				}
+			}
+		});
+		btnBerechnen.setBounds(11, 113, 180, 25);
+		contentPane.add(btnBerechnen);
+	}
+}
